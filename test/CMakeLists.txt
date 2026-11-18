@@ -89,11 +89,15 @@ add_executable(autoarimatest2 autoarimatest2.c)
 target_link_libraries(autoarimatest2 ctsalib ${MATH_LIB})
 
 add_executable(autoarimatest3 autoarimatest3.c)
-
 target_link_libraries(autoarimatest3 ctsalib ${MATH_LIB})
 
+add_executable(sarimatest48 sarimatest48.c)
+target_link_libraries(sarimatest48 ctsalib ${MATH_LIB})
 
-set_target_properties(acftest arimatest artest artest2 pacftest sarimatest misctests dwttests sarimaxtest1 sarimaxtest2 sarimaxtest3 autoarimatest1 autoarimatest2 autoarimatest3
+add_executable(sarimatest96 sarimatest96.c)
+target_link_libraries(sarimatest96 ctsalib ${MATH_LIB})
+
+set_target_properties(sarimatest96 sarimatest48 arimatest artest artest2 pacftest sarimatest misctests dwttests sarimaxtest1 sarimaxtest2 sarimaxtest3 autoarimatest1 autoarimatest2 autoarimatest3
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}"
 )
