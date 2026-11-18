@@ -1,27 +1,34 @@
 # SPDX-License-Identifier: BSD-3-Clause
+# MSVC 没有独立的 libm，数学函数在 CRT 中；其它平台仍需链接 m
+if(MSVC)
+    set(MATH_LIB)
+else()
+    set(MATH_LIB m)
+endif()
+
 add_executable(acftest acftest.c)
 
-target_link_libraries(acftest ctsalib m)
+target_link_libraries(acftest ctsalib ${MATH_LIB})
 
 add_executable(arimatest arimatest.c)
 
-target_link_libraries(arimatest ctsalib m)
+target_link_libraries(arimatest ctsalib ${MATH_LIB})
 
 add_executable(artest artest.c)
 
-target_link_libraries(artest ctsalib m)
+target_link_libraries(artest ctsalib ${MATH_LIB})
 
 add_executable(artest2 artest2.c)
 
-target_link_libraries(artest2 ctsalib m)
+target_link_libraries(artest2 ctsalib ${MATH_LIB})
 
 add_executable(pacftest pacftest.c)
 
-target_link_libraries(pacftest ctsalib m)
+target_link_libraries(pacftest ctsalib ${MATH_LIB})
 
 add_executable(sarimatest sarimatest.c)
 
-target_link_libraries(sarimatest ctsalib m)
+target_link_libraries(sarimatest ctsalib ${MATH_LIB})
 
 # TODO add the header files via a `target_include_directories`
 add_executable(sarimatest2 
@@ -32,7 +39,7 @@ add_executable(sarimatest2
 			   csv_in.h 
 			   )
 
-target_link_libraries(sarimatest2 ctsalib m)
+target_link_libraries(sarimatest2 ctsalib ${MATH_LIB})
 
 # TODO add the header files via a `target_include_directories`
 add_executable(sarimatest3 
@@ -43,7 +50,7 @@ add_executable(sarimatest3
 			   csv_in.h 
 			   )
 
-target_link_libraries(sarimatest3 ctsalib m)
+target_link_libraries(sarimatest3 ctsalib ${MATH_LIB})
 
 # TODO add the header files via a `target_include_directories`
 add_executable(sarimatest_mu
@@ -51,39 +58,39 @@ add_executable(sarimatest_mu
 	       minunit.h
 	      )
 
-target_link_libraries(sarimatest_mu ctsalib m)
+target_link_libraries(sarimatest_mu ctsalib ${MATH_LIB})
 
 add_executable(misctests misctests.c)
 
-target_link_libraries(misctests ctsalib m)
+target_link_libraries(misctests ctsalib ${MATH_LIB})
 
 add_executable(dwttests dwttests.c)
 
-target_link_libraries(dwttests ctsalib m)
+target_link_libraries(dwttests ctsalib ${MATH_LIB})
 
 add_executable(sarimaxtest1 sarimaxtest1.c)
 
-target_link_libraries(sarimaxtest1 ctsalib m)
+target_link_libraries(sarimaxtest1 ctsalib ${MATH_LIB})
 
 add_executable(sarimaxtest2 sarimaxtest2.c)
 
-target_link_libraries(sarimaxtest2 ctsalib m)
+target_link_libraries(sarimaxtest2 ctsalib ${MATH_LIB})
 
 add_executable(sarimaxtest3 sarimaxtest3.c)
 
-target_link_libraries(sarimaxtest3 ctsalib m)
+target_link_libraries(sarimaxtest3 ctsalib ${MATH_LIB})
 
 add_executable(autoarimatest1 autoarimatest1.c)
 
-target_link_libraries(autoarimatest1 ctsalib m)
+target_link_libraries(autoarimatest1 ctsalib ${MATH_LIB})
 
 add_executable(autoarimatest2 autoarimatest2.c)
 
-target_link_libraries(autoarimatest2 ctsalib m)
+target_link_libraries(autoarimatest2 ctsalib ${MATH_LIB})
 
 add_executable(autoarimatest3 autoarimatest3.c)
 
-target_link_libraries(autoarimatest3 ctsalib m)
+target_link_libraries(autoarimatest3 ctsalib ${MATH_LIB})
 
 
 set_target_properties(acftest arimatest artest artest2 pacftest sarimatest misctests dwttests sarimaxtest1 sarimaxtest2 sarimaxtest3 autoarimatest1 autoarimatest2 autoarimatest3

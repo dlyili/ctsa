@@ -9,10 +9,50 @@
  
 #include <stdlib.h> /* calloc(), realloc(), free() */
 #include <string.h> /* strcpy(), strlen() */
+#if !defined(_MSC_VER)
 #include <regex.h>  /* regex_t, regmatch_t, regcomp(), regexec() , 
 					   regfree() */
+#endif
 
 #include "auxlib.h"
+
+#if defined(_MSC_VER)
+/**
+ * MSVC 不提供 POSIX <regex.h>，这里用等价逻辑完成 NUMERIC_MASK 的整串匹配：
+ * "[+-]?[0-9]\\.?[0-9]*(e[+-]?[0-9]+)?"
+ *
+ * \retval 1 整个字符串都符合 NUMERIC_MASK
+ * \retval 0 不符合
+ **/
+static int
+match_numeric_mask(const char* s)
+{
+	const char* p = s;
+
+	if ('\0' == *p) return 0;
+
+	if ((*p == '+') || (*p == '-')) p++;
+
+	/* [0-9] 至少一位 */
+	if ((*p < '0') || (*p > '9')) return 0;
+	while ((*p >= '0') && (*p <= '9')) p++;
+
+	if (*p == '.') p++;
+
+	/* [0-9]* 可为零位 */
+	while ((*p >= '0') && (*p <= '9')) p++;
+
+	/* (e[+-]?[0-9]+)? */
+	if ((*p == 'e') || (*p == 'E')) {
+		p++;
+		if ((*p == '+') || (*p == '-')) p++;
+		if ((*p < '0') || (*p > '9')) return 0;
+		while ((*p >= '0') && (*p <= '9')) p++;
+	}
+
+	return ('\0' == *p);
+}
+#endif
 
 /**
  * Strips the space characters of a string to the left and right
@@ -79,9 +119,21 @@ is_numeric(const char* input)
 	int rv;
 	int result;
 	char* deb = (char*)NULL;
+#if !defined(_MSC_VER)
 	regex_t regex;
 	regmatch_t pmatch[3];         // Up to 3 sub-expressions
+#endif
 	
+#if defined(_MSC_VER)
+	deb = deblank(input);
+	if (!deb) return 0;
+	
+	result = match_numeric_mask(deb);
+	free(deb);
+	
+	/* Normal function termination */
+	return result;
+#else
 	rv = regcomp(&regex, NUMERIC_MASK, REG_EXTENDED | REG_ICASE | REG_NEWLINE);
 	if (rv) {
 		return 0;
@@ -105,6 +157,7 @@ is_numeric(const char* input)
 	
 	/* Normal function termination */
 	return result; 
+#endif
 }
 
 /**

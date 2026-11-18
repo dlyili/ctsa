@@ -4,7 +4,12 @@ cmake_minimum_required(VERSION 3.10)
 set(PROJECT_NAME ctsa)
 project(${PROJECT_NAME} CXX C)
 
-SET(CMAKE_C_FLAGS "-W -Wall -Wextra -O0")
+if(MSVC)
+    # MSVC 不支持 GCC 风格参数（-W/-Wall/-Wextra/-O0），-W 会被当作 /W 并要求参数导致 D8004
+    SET(CMAKE_C_FLAGS "/W3")
+else()
+    SET(CMAKE_C_FLAGS "-W -Wall -Wextra -O0")
+endif()
 
 # src root path
 set(CTSA_SRC_ROOT ${PROJECT_SOURCE_DIR} CACHE PATH "ctsa source root")
