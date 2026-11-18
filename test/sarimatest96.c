@@ -14,7 +14,7 @@ int main(void)
 	sarima_object obj;
 
 	//时间序列长度,一天共计48个时刻(每半小时一个数据)
-	s = 48;
+	s = 96;
 	FILE* ifp = fopen("../data/sarima_96.txt", "r");
 	FILE* ofp = fopen("../data/sarima_predict_96.txt", "w");
 
