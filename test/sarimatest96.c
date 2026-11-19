@@ -58,11 +58,11 @@ int main(void)
 
 	obj = sarima_init(p, d, q, s, P, D, Q, N);
 	// 方法 0 = MLE (最大似然，内部要先 CSS 估初值再 MLE 精调)
-	//     1 = CSS (条件最小二乘，近似估计，速度快很多)
-	//     2 = Box-Jenkins (两步法)
+	//       1 = CSS (条件最小二乘，近似估计，速度快很多)
+	//       2 = Box-Jenkins (两步法)
 	// 对于长季节周期 s=96、季节 AR P=2 的场景，MLE 的 Kalman 滤波状态维数
-	// ip = p + s*P = 194，每步 O(N * ip³) ≈ 3.5B FLOP，迭代数百次会很慢
-	// 生产环境优先用 CSS 做快速拟合，精度够用且速度可提升 1000× 以上
+	// ip = p + s*P = 194，每步 O(N * ip³) ≈ 3.5B FLOP，迭代数百次会很慢。
+	// 生产环境优先用 CSS 做快速拟合，精度够用且速度可提升 1000× 以上。
 	sarima_setMethod(obj, 1);
 	// 优化器：6 = Limited-Memory BFGS，每步内存开销低，适合大维参数空间；
 	// 若遇到收敛告警可换回 5 (BFGS) 或 0 (Nelder-Mead)。

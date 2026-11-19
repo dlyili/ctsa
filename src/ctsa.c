@@ -2225,7 +2225,7 @@ void arima_predict(arima_object obj,double *inp, int L,double *xpred,double *ams
 	iq = obj->q;
 	delta = (double*)malloc(sizeof(double)* (d + 1));
 	W = (double*)malloc(sizeof(double)* N);
-	resid = (double*)malloc(sizeof(double)* N);
+	resid = (double*)malloc(sizeof(double)* obj->Nused);
 
 	ir = iq + 1;
 
@@ -2251,6 +2251,8 @@ void arima_predict(arima_object obj,double *inp, int L,double *xpred,double *ams
 		if (d == 0) {
 			W[i] -= wmean;
 		}
+	}
+	for (i = 0; i < obj->Nused; ++i) {
 		resid[i] = obj->res[i];
 	}
 	for (i = 0; i < ir; ++i) {
@@ -2855,7 +2857,7 @@ void sarima_predict(sarima_object obj, double *inp, int L, double *xpred, double
 	coef2 = (double*)malloc(sizeof(double)* (D*s + 1));
 	delta = (double*)malloc(sizeof(double)* (d + D*s + 1));
 	W = (double*)malloc(sizeof(double)* N);
-	resid = (double*)malloc(sizeof(double)* N);
+	resid = (double*)malloc(sizeof(double)* obj->Nused);
 
 
 	phi = (double*)malloc(sizeof(double)* ir);
@@ -2886,6 +2888,8 @@ void sarima_predict(sarima_object obj, double *inp, int L, double *xpred, double
 		if (d == 0 && D == 0) {
 			W[i] -= wmean;
 		}
+	}
+	for (i = 0; i < obj->Nused; ++i) {
 		resid[i] = obj->res[i];
 	}
 	for (i = 0; i < ir; ++i) {
@@ -2957,7 +2961,7 @@ void sarimax_predict(sarimax_object obj, double *inp, double *xreg, int L,double
 	coef2 = (double*)malloc(sizeof(double)* (D*s + 1));
 	delta = (double*)malloc(sizeof(double)* (d + D*s + 1));
 	W = (double*)malloc(sizeof(double)* N);
-	resid = (double*)malloc(sizeof(double)* N);
+	resid = (double*)malloc(sizeof(double)* obj->Nused);
 
 
 	phi = (double*)malloc(sizeof(double)* ir);
@@ -2993,6 +2997,8 @@ void sarimax_predict(sarimax_object obj, double *inp, double *xreg, int L,double
 				W[i] -= obj->exog[j] * xreg[j*N+i];
 			}
 		}
+	}
+	for (i = 0; i < obj->Nused; ++i) {
 		resid[i] = obj->res[i];
 	}
 	for (i = 0; i < ir; ++i) {
@@ -3067,7 +3073,7 @@ void auto_arima_predict(auto_arima_object obj, double *inp, double *xreg, int L,
 	coef2 = (double*)malloc(sizeof(double)* (D*s + 1));
 	delta = (double*)malloc(sizeof(double)* (d + D*s + 1));
 	W = (double*)malloc(sizeof(double)* N);
-	resid = (double*)malloc(sizeof(double)* N);
+	resid = (double*)malloc(sizeof(double)* obj->Nused);
 
 	diter = 0;
 
@@ -3111,6 +3117,8 @@ void auto_arima_predict(auto_arima_object obj, double *inp, double *xreg, int L,
 				W[i] -= obj->exog[j] * xreg[(j-diter)*N+i];
 			}
 		}
+	}
+	for (i = 0; i < obj->Nused; ++i) {
 		resid[i] = obj->res[i];
 	}
 	for (i = 0; i < ir; ++i) {
@@ -3189,7 +3197,7 @@ void sarimax_wrapper_predict(sarimax_wrapper_object obj, double *inp, double *xr
 	coef2 = (double*)malloc(sizeof(double)* (D*s + 1));
 	delta = (double*)malloc(sizeof(double)* (d + D*s + 1));
 	W = (double*)malloc(sizeof(double)* N);
-	resid = (double*)malloc(sizeof(double)* N);
+	resid = (double*)malloc(sizeof(double)* obj->sarimax->Nused);
 
 	diter = 0;
 
@@ -3234,6 +3242,8 @@ void sarimax_wrapper_predict(sarimax_wrapper_object obj, double *inp, double *xr
 				W[i] -= obj->sarimax->exog[j] * xreg[(j-diter)*N+i];
 			}
 		}
+	}
+	for (i = 0; i < obj->sarimax->Nused; ++i) {
 		resid[i] = obj->sarimax->res[i];
 	}
 	for (i = 0; i < ir; ++i) {
